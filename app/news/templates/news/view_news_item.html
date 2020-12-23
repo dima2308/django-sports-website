@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ news_item.title }}
+{% endblock title %}
+
+{% block content %}
+<div class="card text-center mt-4">
+  <div class="card-body">
+    <h5 class="card-title">{{ news_item.title }}</h5>
+    <img src={{ news_item.photo }} class="card-img-top" />
+    <p class="card-text">{{ news_item.content}}</p>
+  </div>
+  <div class="card-footer text-muted">
+    {{ news_item.created_at }}
+  </div>
+</div>
+{% endblock content %}
