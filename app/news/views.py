@@ -1,40 +1,39 @@
+from django.views.generic import CreateView, DetailView, ListView
+
 from .forms import NewsForm
-from django.shortcuts import get_object_or_404, redirect, render
 from .models import Category, News
 
 
-def index(request):
-    news = News.objects.filter(is_published=True)
-    context = {
-        'news': news
-    }
-    return render(request, 'news/index.html', context)
+class HomeNews(ListView):
+    model = News
+    context_object_name = 'news'
+    template_name = 'news/index.html'
+
+    def get_queryset(self):
+        return News.objects.filter(is_published=True)
 
 
-def view_category_news(request, category_id):
-    category_news = News.objects.filter(category=category_id)
-    category = get_object_or_404(Category, pk=category_id)
-    context = {
-        'news': category_news,
-        'category': category
-    }
-    return render(request, 'news/category_news.html', context)
+class ViewNewsOfCategory(ListView):
+    model = News
+    context_object_name = 'news'
+    template_name = 'news/category_news.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = Category.objects.get(
+            pk=self.kwargs.get('category_id'))
+        return context
+
+    def get_queryset(self):
+        return News.objects.filter(category_id=self.kwargs.get('category_id'))
 
 
-def view_news_item(request, news_item_id):
-    news_item = get_object_or_404(News, pk=news_item_id)
-    context = {
-        'news_item': news_item
-    }
-    return render(request, 'news/view_news_item.html', context)
+class ViewNewsItem(DetailView):
+    model = News
+    context_object_name = 'news_item'
+    template_name = 'news/view_news_item.html'
 
 
-def create_news(request):
-    if request.method == 'POST':
-        form = NewsForm(request.POST)
-        if form.is_valid():
-            news = form.save()
-            return redirect(news)
-
-    form = NewsForm()
-    return render(request, 'news/create_news_form.html', {'form': form})
+class CreateNews(CreateView):
+    form_class = NewsForm
+    template_name = 'news/create_news_form.html'
