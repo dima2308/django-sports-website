@@ -10,6 +10,7 @@ class News(models.Model):
     category = models.ForeignKey(
         'Category', verbose_name='Категория', on_delete=models.PROTECT)
     is_published = models.BooleanField('Опубликовано', default=True)
+    views = models.IntegerField('Количество просмотров', default=0)
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
     edited_at = models.DateTimeField('Дата редактирования', auto_now=True)
 

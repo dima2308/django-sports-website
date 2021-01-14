@@ -10,7 +10,7 @@ class HomeNews(ListView):
     template_name = 'news/index.html'
 
     def get_queryset(self):
-        return News.objects.filter(is_published=True)
+        return News.objects.filter(is_published=True).select_related('category')
 
 
 class ViewNewsOfCategory(ListView):
@@ -25,7 +25,9 @@ class ViewNewsOfCategory(ListView):
         return context
 
     def get_queryset(self):
-        return News.objects.filter(category_id=self.kwargs.get('category_id'))
+        return News.objects.filter(
+            category_id=self.kwargs.get('category_id')
+        ).select_related('category')
 
 
 class ViewNewsItem(DetailView):

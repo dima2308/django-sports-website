@@ -9,6 +9,8 @@ class NewsAdmin(admin.ModelAdmin):
     list_editable = ('is_published',)
     list_filter = ('category', 'is_published')
     search_fields = ('title', 'category')
+    fields = ('title', 'category', 'views', 'created_at', 'edited_at', 'is_published')
+    readonly_fields = ('views', 'created_at', 'edited_at')
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -19,3 +21,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(News, NewsAdmin)
 admin.site.register(Category)
+
+admin.site.site_title = 'Панель управления'
+admin.site.site_header = 'Панель управления'
