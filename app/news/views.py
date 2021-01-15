@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, ListView
 
 from .forms import NewsForm
@@ -36,6 +37,7 @@ class ViewNewsItem(DetailView):
     template_name = 'news/view_news_item.html'
 
 
-class CreateNews(CreateView):
+class CreateNews(LoginRequiredMixin, CreateView):
     form_class = NewsForm
     template_name = 'news/create_news_form.html'
+    raise_exception = True
