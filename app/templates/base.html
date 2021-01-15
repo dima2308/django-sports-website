@@ -18,6 +18,10 @@
   <div class="container col-md-8 mt-3">
     {% block content %}
     {% endblock content %}
+
+    {% if page_obj.has_other_pages %}
+      {% include 'include/_pagination.html' %}
+    {% endif %}
   </div>
 
 </body>

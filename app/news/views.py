@@ -1,4 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from django.shortcuts import render
 from django.views.generic import CreateView, DetailView, ListView
 
 from .forms import NewsForm
@@ -9,6 +11,7 @@ class HomeNews(ListView):
     model = News
     context_object_name = 'news'
     template_name = 'news/index.html'
+    paginate_by = 3
 
     def get_queryset(self):
         return News.objects.filter(is_published=True).select_related('category')

@@ -1,0 +1,26 @@
+<ul class="pagination mt-3 justify-content-center">
+    <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+        <a class="page-link" href="?page={{page_obj.prev_page_number}}">Previous</a>
+    </li>
+
+    {% for p in page_obj.paginator.page_range %}
+        {% if page_obj.number == p %}
+            <li class="page-item active">
+                <a class="page-link" href="?page={{p}}">{{ p }}</a>
+            </li>
+
+        {% elif p > page_obj.number|add:-2 and p < page_obj.number|add:2 %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{p}}">{{ p }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+    
+    <li class="page-item disabled">
+    {% if not page_obj.has_next %}
+        <a class="page-link" href="#">Next</a>
+    {% else %}
+        <a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a>
+    {% endif %}
+    </li>
+</ul>
