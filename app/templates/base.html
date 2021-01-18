@@ -16,6 +16,19 @@
   {% include 'include/_navbar.html' %}
 
   <div class="container col-md-8 mt-3">
+    {% if messages %}
+      {% for msg in messages %}
+        {% if msg.tags == 'error' %}
+        <div class="alert alert-danger">
+          {{ msg }}
+        </div>
+        {% else %}
+        <div class="alert alert-success">
+          {{ msg }}
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
     {% block content %}
     {% endblock content %}
 
