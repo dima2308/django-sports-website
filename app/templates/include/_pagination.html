@@ -16,11 +16,14 @@
         {% endif %}
     {% endfor %}
     
-    <li class="page-item disabled">
     {% if not page_obj.has_next %}
-        <a class="page-link" href="#">Next</a>
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+        </li>
     {% else %}
-        <a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a>
+        <li class="page-item">
+            <a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a>
+        </li>
     {% endif %}
     </li>
 </ul>

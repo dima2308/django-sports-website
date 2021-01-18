@@ -11,7 +11,7 @@ class HomeNews(ListView):
     model = News
     context_object_name = 'news'
     template_name = 'news/index.html'
-    paginate_by = 3
+    paginate_by = 2
 
     def get_queryset(self):
         return News.objects.filter(is_published=True).select_related('category')
