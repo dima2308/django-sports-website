@@ -35,3 +35,10 @@ class LoginForm(AuthenticationForm):
         attrs={'class': 'form-control', 'autocomplete': 'off'}))
     password = forms.CharField(
         label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+
+class ContactForm(forms.Form):
+    subject = forms.CharField(label='Тема', widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+    content = forms.CharField(label='Текст', widget=forms.Textarea(
+        attrs={'class': 'form-control', 'rows': 5}))

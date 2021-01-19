@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, ListView
 
-from .forms import LoginForm, NewsForm, RegisterForm
+from .forms import ContactForm, LoginForm, NewsForm, RegisterForm
 from .models import Category, News
 
 
@@ -79,3 +80,22 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('index')
+
+
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            mail = send_mail(form.cleaned_data['subject'], form.cleaned_data['content'], 'dimabatarev@mail.ru', [
+                request.user.email], fail_silently=True)
+            if mail:
+                messages.success(request, 'Письмо успешно отправлено!')
+                return redirect('index')
+            else:
+                messages.error(
+                    request, 'Произошла ошибка при отправке письма!')
+
+    form = ContactForm()
+
+    return render(request, template_name='news/contact.html', context={'form': form})
