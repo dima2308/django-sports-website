@@ -58,8 +58,8 @@ def register_user(request):
             return redirect('index')
         else:
             messages.error(request, 'Заполните корректно все поля!')
-
-    form = RegisterForm()
+    else:
+        form = RegisterForm()
 
     return render(request, template_name='news/register.html', context={'form': form})
 
@@ -71,8 +71,8 @@ def login_user(request):
             user = form.get_user()
             login(request, user)
             return redirect('index')
-
-    form = LoginForm()
+    else:
+        form = LoginForm()
 
     return render(request, template_name='news/login.html', context={'form': form})
 
@@ -95,7 +95,9 @@ def contact_us(request):
             else:
                 messages.error(
                     request, 'Произошла ошибка при отправке письма!')
-
-    form = ContactForm()
+        else:
+            messages.error(request, 'Ошибка валидации!')
+    else:
+        form = ContactForm()
 
     return render(request, template_name='news/contact.html', context={'form': form})

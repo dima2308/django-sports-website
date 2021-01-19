@@ -2,6 +2,7 @@ from django import forms
 from .models import News
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from captcha.fields import CaptchaField
 
 
 class NewsForm(forms.ModelForm):
@@ -42,3 +43,4 @@ class ContactForm(forms.Form):
         attrs={'class': 'form-control'}))
     content = forms.CharField(label='Текст', widget=forms.Textarea(
         attrs={'class': 'form-control', 'rows': 5}))
+    captcha = CaptchaField(label='Символы с изображения')
