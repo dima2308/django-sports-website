@@ -1,15 +1,27 @@
 from .models import Category, News
 from django.contrib import admin
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django import forms
+
+
+class NewsAdminForm(forms.ModelForm):
+    content = forms.CharField(label='Содержимое', widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = News
+        fields = '__all__'
 
 
 class NewsAdmin(admin.ModelAdmin):
+    form = NewsAdminForm
     list_display = ('title', 'category', 'is_published',
                     'created_at', 'edited_at')
     list_display_links = ('title',)
     list_editable = ('is_published',)
     list_filter = ('category', 'is_published')
     search_fields = ('title', 'category')
-    fields = ('title', 'category', 'views', 'created_at', 'edited_at', 'is_published')
+    fields = ('title', 'category', 'content', 'views',
+              'created_at', 'edited_at', 'is_published')
     readonly_fields = ('views', 'created_at', 'edited_at')
 
 
