@@ -4,9 +4,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, DetailView, ListView
+import rest_framework
 
 from .forms import ContactForm, LoginForm, NewsForm, RegisterForm
 from .models import Category, News
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializers import NewsSerializer
 
 
 class HomeNews(ListView):
@@ -101,3 +106,21 @@ def contact_us(request):
         form = ContactForm()
 
     return render(request, template_name='news/contact.html', context={'form': form})
+
+
+class NewsView(APIView):
+    def get(self, request):
+        news = News.objects.all()
+        serializer = NewsSerializer(news, many=True)
+        return Response({"news": serializer.data})
+
+    def post(self, request):
+        news_item = request.data.get('news')
+        serializer = NewsSerializer(data=news_item)
+
+        if serializer.is_valid():
+            news_item_saved = serializer.save()
+            return Response({"success": "News '{}' created".format(news_item_saved.title)})
+        else:
+            print(serializer)
+            return Response({"error": 'a'})

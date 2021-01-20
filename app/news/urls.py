@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (CreateNews, HomeNews, ViewNewsItem, ViewNewsOfCategory, contact_us,
+from .views import (CreateNews, HomeNews, NewsView, ViewNewsItem, ViewNewsOfCategory, contact_us,
                     login_user, logout_user, register_user)
 
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path('register/', register_user, name='register_user'),
     path('login', login_user, name='login_user'),
     path('logout', logout_user, name='logout_user'),
-    path('contact', contact_us, name='contact_us')
+    path('contact', contact_us, name='contact_us'),
+    path('api', NewsView.as_view(), name="news")
 ]

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'captcha',
+    'rest_framework',
     'debug_toolbar'
 ]
 
