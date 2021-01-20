@@ -22,7 +22,7 @@ class NewsViewsTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'news/index.html')
 
-    def test_pagination_is_ten(self):
+    def test_pagination(self):
         resp = self.client.get(reverse('index'))
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('is_paginated' in resp.context)
