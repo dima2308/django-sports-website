@@ -2,15 +2,15 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import CreateView, DetailView, ListView
-import rest_framework
+from rest_framework import status
+from rest_framework.generics import (ListCreateAPIView,
+                                     RetrieveUpdateDestroyAPIView)
+from rest_framework.response import Response
 
 from .forms import ContactForm, LoginForm, NewsForm, RegisterForm
 from .models import Category, News
-
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from .serializers import NewsSerializer
 
 
@@ -108,19 +108,20 @@ def contact_us(request):
     return render(request, template_name='news/contact.html', context={'form': form})
 
 
-class NewsView(APIView):
-    def get(self, request):
-        news = News.objects.all()
-        serializer = NewsSerializer(news, many=True)
-        return Response({"news": serializer.data})
+class NewsView(ListCreateAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
 
-    def post(self, request):
-        news_item = request.data.get('news')
-        serializer = NewsSerializer(data=news_item)
+    def perform_create(self, serializer):
+        category = get_object_or_404(
+            Category, id=self.request.data.get('category'))
+        try:
+            serializer.save(category=category)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        if serializer.is_valid():
-            news_item_saved = serializer.save()
-            return Response({"success": "News '{}' created".format(news_item_saved.title)})
-        else:
-            print(serializer)
-            return Response({"error": 'a'})
+
+class SingleNewsView(RetrieveUpdateDestroyAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer

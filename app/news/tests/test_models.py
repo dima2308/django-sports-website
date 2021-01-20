@@ -38,9 +38,6 @@ class NewsModelTestClass(TestCase):
     def test_get_str_news(self):
         self.assertEquals(self.item.__str__(), 'Тестовая новость')
 
-    def test_get_str_news2(self):
-        print(self.item._meta.get_field('category').to)
-
     def test_get_absolute_url(self):
         item = News.objects.get(pk=1)
         self.assertEquals(item.get_absolute_url(), '/news/1/')

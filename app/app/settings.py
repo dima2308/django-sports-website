@@ -159,3 +159,8 @@ EMAIL_USE_TLS = True
 # CKEditor settings
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S"
+}
